@@ -11,4 +11,20 @@ In this work, we propose a novel and easy-to-implement sampling strategy, coined
 
 
 ## Syntex
+Using all default parameters:
+```
+[X_Omega_css, I_css, J_css] = CCS(X, p, delta);
+
+[C,U_r,R, fct_all_time, ite] = ICURC(X_Omega_css, I_css, J_css, r,'');
+```
+
+Using custom parameters:
+```
+params.eta = [1/p, 1/p, 1/(2*p)];
+params.TOL = 1e-4;
+params.max_ite = 500;
+[X_Omega_css, I_css, J_css] = CCS(X, p, delta);
+
+[C,U_r,R, fct_all_time, ite] = ICURC(X_Omega_css, I_css, J_css, r,params);
+```
 

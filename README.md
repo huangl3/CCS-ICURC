@@ -15,7 +15,7 @@ Using all default parameters:
 ```
 [X_Omega_css, I_css, J_css] = CCS(X, p, delta);
 
-[C,U_r,R, fct_all_time, ite] = ICURC(X_Omega_css, I_css, J_css, r,'');
+[C,U_pinv,R, ICURC_time, ICURC_ite] = ICURC(X_Omega_css, I_css, J_css, r,'');
 ```
 
 Using custom parameters:
@@ -25,6 +25,30 @@ params.TOL = 1e-4;
 params.max_ite = 500;
 [X_Omega_css, I_css, J_css] = CCS(X, p, delta);
 
-[C,U_pinv,R, ICURC_time, ICURC_ite] = ICURC(X_Omega_css, I_css, J_css, r,params);
+[C,pinv_U,R, ICURC_time] = ICURC(X_Omega_css, I_css, J_css, r,params);
 ```
+
+## Input Description for CCS
+1. X : low rank matrix.  
+2. delta : rate of sampled columns or rows
+3. p : observation rate on the selected submatrices
+
+## Output Description for CCS
+1. X_Omega_css : observed data matrix based on CSS sampling model
+2. I_css : row indices of the selected row submatrix
+3. J_css : column indices of the selected column submatrix
+
+## Input Description for ICURC
+1. X_Omega_css : observed data matrix based on CSS sampling model
+2. I_css : row indices of the selected row submatrix
+3. J_css : column indices of the selected column submatrix
+4. r : rank of X.
+5. params : parameters for the algorithm
+   * .max_iter : Maximum number of iterations. (default 500)
+   * .TOL : Desired Frobenius norm error. (default 1e-4)
+   * .eta :  eta(1), eta(2), and eta(3) the step sizes for updating C, R, and U
+
+## Output Description for ICURC
+1. C，pinv_U，R : CUR decomposition of $X = C U^\dagger R$, where $U^\dagger$ is the pseudo-inverse of $U$.
+2. ICURC_time : runtime for ICURC.
 

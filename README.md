@@ -25,6 +25,6 @@ params.TOL = 1e-4;
 params.max_ite = 500;
 [X_Omega_css, I_css, J_css] = CCS(X, p, delta);
 
-[C,U_r,R, fct_all_time, ite] = ICURC(X_Omega_css, I_css, J_css, r,params);
+[C,U_pinv,R, ICURC_time, ICURC_ite] = ICURC(X_Omega_css, I_css, J_css, r,params);
 ```
 

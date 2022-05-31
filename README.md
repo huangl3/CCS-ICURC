@@ -25,7 +25,7 @@ params.TOL = 1e-4;
 params.max_ite = 500;
 [X_Omega_css, I_css, J_css] = CCS(X, p, delta);
 
-[C,pinv_U,R, ICURC_time] = ICURC(X_Omega_css, I_css, J_css, r,params);
+[C,U_pinv,R, ICURC_time] = ICURC(X_Omega_css, I_css, J_css, r,params);
 ```
 
 ## Input Description for CCS
@@ -49,6 +49,6 @@ params.max_ite = 500;
    * .eta :  eta(1), eta(2), and eta(3) the step sizes for updating C, R, and U
 
 ## Output Description for ICURC
-1. C，pinv_U，R : CUR decomposition of $X = C U^\dagger R$, where $U^\dagger$ is the pseudo-inverse of $U$.
+1. C，U_pinv，R : CUR decomposition of $X = C U^\dagger R$, where $U^\dagger$ is the pseudo-inverse of $U$.
 2. ICURC_time : runtime for ICURC.
 

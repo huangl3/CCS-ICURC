@@ -7,7 +7,7 @@ r = 5; %rank of the optimal matrix
 params_CCS.p = 0.3; %uniform observation rate on the submatrices
 params_CCS.delta = 0.2;%percentage of sampled columns or rows
 
-params_ICURC.eta = [1/params_CCS.p, 1/params_CCS.p, 1/(2*params_CCS.p)]; %step sizes for updating C, R, and U
+%params_ICURC.eta = [1/params_CCS.p, 1/params_CCS.p, 1/(2*params_CCS.p)]; %step sizes for updating C, R, and U
 params_ICURC.TOL = 1e-4;
 params_ICURC.max_ite = 500;
 %%

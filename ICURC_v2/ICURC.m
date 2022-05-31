@@ -1,4 +1,4 @@
-function [C,U_pinv,R, ICURC_time] = ICURC(X_Omega_UR, Ind_I, Ind_J, r, params_ICURC)
+function [C,U_pinv,R, ICURC_time] = ICURC(X_Omega_UR, I_css, J_css, r, params_ICURC)
 %Return the CUR components of result of solved Matrix Completion problem
 %under Cross-Concentrated Sampling (CCS). 
 %
@@ -11,7 +11,7 @@ function [C,U_pinv,R, ICURC_time] = ICURC(X_Omega_UR, Ind_I, Ind_J, r, params_IC
 %       TOL,max_ite - stopping crICURC_iteria
 %           defaults = 1e-4 (TOL), 500 (mxitr)
 %       eta - step size
-%           default = [1, 1, 1] for [eta_C, eat_R, era_U]step sizes for
+%           default = [1, 1, 1] for [eta_C, eat_R, era_U], step sizes for
 %           updating C, R, and U respectively 
 %       steps_are1 - if all step sizes are 1
 %           default = true
@@ -32,20 +32,20 @@ function [C,U_pinv,R, ICURC_time] = ICURC(X_Omega_UR, Ind_I, Ind_J, r, params_IC
     steps_are1=params_ICURC.steps_are1;
     
     %This step is to extract observed C, U, and R 
-    Obs_U = X_Omega_UR(Ind_I, Ind_J);  
-    Obs_C = X_Omega_UR(:, Ind_J);
-    Obs_R = X_Omega_UR(Ind_I, :);
+    Obs_U = X_Omega_UR(I_css, J_css);  
+    Obs_C = X_Omega_UR(:, J_css);
+    Obs_R = X_Omega_UR(I_css, :);
     C_size = size(Obs_C);
     R_size = size(Obs_R);
 
     all_row_ind = 1:C_size(1); 
     all_col_ind = 1:R_size(2); 
 
-    Ind_I_comp = setdiff(all_row_ind, Ind_I); 
-    Ind_J_comp = setdiff(all_col_ind, Ind_J); 
+    I_css_comp = setdiff(all_row_ind, I_css); 
+    J_css_comp = setdiff(all_col_ind, J_css); 
     
-    C = Obs_C(Ind_I_comp, :); 
-    R = Obs_R(:, Ind_J_comp); 
+    C = Obs_C(I_css_comp, :); 
+    R = Obs_R(:, J_css_comp); 
     %C and R are C_obs\U, R_obs\U.
     Smp_C = C ~= 0;
     Smp_R = R ~= 0; 
@@ -100,10 +100,10 @@ function [C,U_pinv,R, ICURC_time] = ICURC(X_Omega_UR, Ind_I, Ind_J, r, params_IC
 
                 Final_C = zeros(C_size);
                 Final_R = zeros(R_size); 
-                Final_C(Ind_I_comp, :) = C;
-                Final_R(:, Ind_J_comp) = R;
-                Final_C(Ind_I, :) = U_i; 
-                Final_R(:, Ind_J) = U_i; 
+                Final_C(I_css_comp, :) = C;
+                Final_R(:, J_css_comp) = R;
+                Final_C(I_css, :) = U_i; 
+                Final_R(:, J_css) = U_i; 
 
                 C = Final_C;
                 R = Final_R; 
@@ -152,10 +152,10 @@ function [C,U_pinv,R, ICURC_time] = ICURC(X_Omega_UR, Ind_I, Ind_J, r, params_IC
 
                 Final_C = zeros(C_size);
                 Final_R = zeros(R_size); 
-                Final_C(Ind_I_comp, :) = C;
-                Final_R(:, Ind_J_comp) = R;
-                Final_C(Ind_I, :) = U_i; 
-                Final_R(:, Ind_J) = U_i; 
+                Final_C(I_css_comp, :) = C;
+                Final_R(:, J_css_comp) = R;
+                Final_C(I_css, :) = U_i; 
+                Final_R(:, J_css) = U_i; 
 
                 C = Final_C;
                 R = Final_R; 

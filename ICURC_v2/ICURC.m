@@ -16,7 +16,6 @@ function [C,U_pinv,R, ICURC_time] = ICURC(X_Omega_UR, I_css, J_css, r, params_IC
 %       steps_are1 - if all step sizes are 1
 %           default = true
 
-
 %Outputs:
 %   C, U_pinv, R - The CUR components of recovered X
 %   ICURC_time -Function execution time

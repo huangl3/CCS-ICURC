@@ -13,25 +13,30 @@ In this work, we propose a novel and easy-to-implement sampling strategy, coined
 ## Syntex
 Using all default parameters:
 ```
-[X_Omega_css, I_css, J_css] = CCS(X, p, delta);
+[X_Omega_css, I_css, J_css] = CCS(X, '');
 
 [C,U_pinv,R, ICURC_time, ICURC_ite] = ICURC(X_Omega_css, I_css, J_css, r,'');
 ```
 
 Using custom parameters:
 ```
-params.eta = [1/p, 1/p, 1/(2*p)];
-params.TOL = 1e-4;
-params.max_ite = 500;
-[X_Omega_css, I_css, J_css] = CCS(X, p, delta);
+params_ccs.delta = 0.2;
+params_ccs.p = 0.3;
+[X_Omega_css, I_css, J_css] = CCS(X, params_ccs);
 
-[C,U_pinv,R, ICURC_time] = ICURC(X_Omega_css, I_css, J_css, r,params);
+p = params_ccs.p;
+params_icurc.eta = [1/p, 1/p, 1/(2*p)];
+params_icurc.TOL = 1e-4;
+params_icurc.max_ite = 500;
+[C,U_pinv,R, ICURC_time] = ICURC(X_Omega_css, I_css, J_css, r,params_icurc);
 ```
 
 ## Input Description for CCS
 1. X : low rank matrix.  
-2. delta : rate of sampled columns or rows
-3. p : observation rate on the selected submatrices
+2. params_ccs : parameters for the algorithm CCS
+   * .delta : rate of sampled columns or rows. (default 0.2)
+   * .p : observation rate on the selected submatrices. (default 0.2)
+
 
 ## Output Description for CCS
 1. X_Omega_css : observed data matrix based on CSS sampling model
@@ -43,10 +48,10 @@ params.max_ite = 500;
 2. I_css : row indices of the selected row submatrix
 3. J_css : column indices of the selected column submatrix
 4. r : rank of X.
-5. params : parameters for the algorithm
+5. params_icurc : parameters for the algorithm ICURC
    * .max_iter : Maximum number of iterations. (default 500)
    * .TOL : Desired Frobenius norm error. (default 1e-4)
-   * .eta :  eta(1), eta(2), and eta(3) the step sizes for updating C, R, and U
+   * .eta :  eta(1), eta(2), and eta(3) the step sizes for updating C, R, and U. (default [1 1 1])
 
 ## Output Description for ICURC
 1. C，U_pinv，R : CUR decomposition of $X = C U^\dagger R$, where $U^\dagger$ is the pseudo-inverse of $U$.

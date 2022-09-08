@@ -16,7 +16,7 @@ A_generater = randn(m,r);
 B_generater = randn(r,n);
 X = A_generater * B_generater;
 %Generate observed data under CCS with give p and delta
-[X_Omega_css, I_css, J_css] = CCS(X, params_ICURC); 
+[X_Omega_css, I_css, J_css] = CCS(X, params_CCS); 
 
 fprintf('Running ICURC with m=%d, n=%d, r=%f...\n',m,n,r);
 %Run ICURC 

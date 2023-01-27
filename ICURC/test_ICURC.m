@@ -18,7 +18,7 @@ X = A_generater * B_generater;
 %Generate observed data under CCS with give p and delta
 [X_Omega_css, I_css, J_css] = CCS(X, params_CCS); 
 
-fprintf('Running ICURC with m=%d, n=%d, r=%f...\n',m,n,r);
+fprintf('Running ICURC with m=%d, n=%d, r=%d \n',m,n,r);
 %Run ICURC 
 [C,U_pinv,R, ICURC_time] = ICURC(X_Omega_css, I_css, J_css, r, params_ICURC);
 Mout_CURf = C*U_pinv*R; 

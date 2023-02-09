@@ -25,7 +25,12 @@ function [C,U_pinv,R, ICURC_time] = ICURC(X_Omega_UR, I_css, J_css, r, params_IC
         params_ICURC=struct();
     end
     params_ICURC = SetDefaultParams_ICURC(params_ICURC);
-    eta=params_ICURC.eta;
+    
+    eta=params_ICURC.eta; 
+    fprintf('using stepsize eta_C = %f.\n', eta(1));
+    fprintf('using stepsize eta_R = %f.\n', eta(2));
+    fprintf('using stepsize eta_U = %f.\n', eta(3));
+    
     TOL=params_ICURC.TOL;
     max_ite=params_ICURC.max_ite;
     steps_are1=params_ICURC.steps_are1;
@@ -81,13 +86,14 @@ function [C,U_pinv,R, ICURC_time] = ICURC(X_Omega_UR, I_css, J_css, r, params_IC
                             norm(U_i(Omega_U)- L_obs_U_vec))/col_row_norm_sum;
     %If all step sizes are 1
     if steps_are1 
+        fprintf('running ICURC with stepsize all equal to 1\n');
         fct_time = tic;
         for ICURC_ite = 1:max_ite
-
+            ite_itme = tic;
             R = u*u'*R;
             C = C*v*v';        
             Old_error = New_Error;
-
+            
             New_Error = (norm(R(Omega_row) - L_obs_row_vec,'fro') + ... 
                             norm(C(Omega_col)- L_obs_col_vec, 'fro') + ... 
                             norm(U_i(Omega_U)- L_obs_U_vec))/col_row_norm_sum;  
@@ -112,7 +118,7 @@ function [C,U_pinv,R, ICURC_time] = ICURC(X_Omega_UR, I_css, J_css, r, params_IC
                 v = v(:, 1:r);
                 s = s(1:r, 1:r);  
                 U_pinv = v*pinv(s)*u';
-                fprintf('ICURC finished at  %d-th iteration \n', ite);
+                fprintf('ICURC finished at  %d-th iteration \n', ICURC_ite);
                 return
             end
             %Updating R, C, and U
@@ -125,17 +131,20 @@ function [C,U_pinv,R, ICURC_time] = ICURC(X_Omega_UR, I_css, J_css, r, params_IC
             v = v(:, 1:r);
             s = s(1:r, 1:r);  
             U_i = u*s*v';
+            
+            fprintf('Iteration %d: error: %e, timer: %f \n', ICURC_ite, New_Error, toc(ite_itme));
         end
         
     %If all step sizes are not 1    
     else
+        fprintf('running ICURC with given stepsizes \n');
         step_c = eta(1);
         step_r = eta(2);
         step_u = eta(3);
         
         fct_time = tic;
         for ICURC_ite = 1:max_ite
-
+            ite_itme = tic;
             R = u*u'*R;
             C = C*v*v';        
             Old_error = New_Error;
@@ -165,7 +174,7 @@ function [C,U_pinv,R, ICURC_time] = ICURC(X_Omega_UR, I_css, J_css, r, params_IC
                 v = v(:, 1:r);
                 s = s(1:r, 1:r);  
                 U_pinv = v*pinv(s)*u';
-                fprintf('ICURC finished at  %d-th iteration \n', ite);
+                fprintf('ICURC finished at  %d-th iteration \n', ICURC_ite);
                 return
             end  
             %Updating R, C, and U
@@ -178,6 +187,8 @@ function [C,U_pinv,R, ICURC_time] = ICURC(X_Omega_UR, I_css, J_css, r, params_IC
             v = v(:, 1:r);
             s = s(1:r, 1:r);  
             U_i = u*s*v';
+            fprintf('Iteration %d: error: %e, timer: %f \n', ICURC_ite, New_Error, toc(ite_itme));
+
          end
      end
 end

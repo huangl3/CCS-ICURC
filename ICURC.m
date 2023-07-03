@@ -174,7 +174,7 @@ function [C,U_pinv,R, ICURC_time] = ICURC(X_Omega_UR, I_css, J_css, r, params_IC
                 v = v(:, 1:r);
                 s = s(1:r, 1:r);  
                 U_pinv = v*pinv(s)*u';
-                fprintf('ICURC finished at  %d-th iteration \n', ICURC_ite);
+                fprintf('ICURC finished in %d iterations, final error: %e, total runtime: %f \n', ICURC_ite, New_Error, ICURC_time);
                 return
             end  
             %Updating R, C, and U

@@ -1,7 +1,7 @@
 # ICURC for Cross-Concentrated Sampling Model 
 This is Matlab repo for an efficient non-convex algorithm, termed Iterative CUR Completion (ICURC), for Cross-Concentrated Sampling based matrix completion. For the details of Cross-Concentrated Sampling and ICURC, read and cite our latest TPAMI paper:
 
-[1] HanQin Cai, Longxiu Huang, Pengyu Li, and Deanna Needell. <a href=https://doi.org/10.1109/TPAMI.2023.3261185>Matrix Completion with Cross-Concentrated Sampling: Bridging Uniform Sampling and CUR Sampling</a>. *IEEE Transactions on Pattern Analysis and Machine Intelligence*, 45(8): 10100–10113, 2023. doi: 10.1109/TPAMI.2023.3261185.
+[1] HanQin Cai, Longxiu Huang, Pengyu Li, and Deanna Needell. <a href=https://doi.org/10.1109/TPAMI.2023.3261185>Matrix Completion with Cross-Concentrated Sampling: Bridging Uniform Sampling and CUR Sampling</a>. *IEEE Transactions on Pattern Analysis and Machine Intelligence*, 45 (8): 10100–10113, 2023. doi: 10.1109/TPAMI.2023.3261185.
 
 ###### To display math symbols properly, one may have to install a MathJax plugin. For example, [MathJax Plugin for Github](https://chrome.google.com/webstore/detail/mathjax-plugin-for-github/ioemnmodlmafdkllaclgeombjnmnbima?hl=en).
 

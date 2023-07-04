@@ -146,7 +146,7 @@ function [C,U_pinv,R, ICURC_time] = ICURC(X_Omega_UR, I_ccs, J_ccs, r, params_IC
             ite_itme = tic;
             R = u*(u'*R);
             C = C*v*v';        
-            Old_error = New_Error;
+            
             New_Error = (norm(R(Omega_row) - L_obs_row_vec,'fro') + ... 
                             norm(C(Omega_col)- L_obs_col_vec, 'fro') + ... 
                             norm(U(Omega_U)- L_obs_U_vec))/col_row_norm_sum;   

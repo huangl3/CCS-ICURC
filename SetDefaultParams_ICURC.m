@@ -1,4 +1,4 @@
-function s = SetDefaultParams_RCURC(s)
+function s = SetDefaultParams_ICURC(s)
 % s = SetDefaultsms(s);
 % Sets default smeters
 % s: user-specified set of parameters that are used instead of defaults

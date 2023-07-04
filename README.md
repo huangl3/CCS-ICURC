@@ -13,22 +13,22 @@ In this work, we propose a novel and easy-to-implement sampling strategy, coined
 ## Syntex
 Using all default parameters:
 ```
-[X_Omega_css, I_css, J_css] = CCS(X, '');
+[X_Omega_ccs, I_ccs, J_ccs] = CCS(X, '');
 
-[C,U_pinv,R, ICURC_time, ICURC_ite] = ICURC(X_Omega_css, I_css, J_css, r,'');
+[C,U_pinv,R, ICURC_time, ICURC_ite] = ICURC(X_Omega_ccs, I_ccs, J_ccs, r,'');
 ```
 
 Using custom parameters:
 ```
 params_ccs.delta = 0.2;
 params_ccs.p = 0.3;
-[X_Omega_css, I_css, J_css] = CCS(X, params_ccs);
+[X_Omega_ccs, I_ccs, J_ccs] = CCS(X, params_ccs);
 
 p = params_ccs.p;
 params_icurc.eta = [1/p, 1/p, 1/(2*p)];
 params_icurc.TOL = 1e-4;
 params_icurc.max_ite = 500;
-[C,U_pinv,R, ICURC_time] = ICURC(X_Omega_css, I_css, J_css, r,params_icurc);
+[C,U_pinv,R, ICURC_time] = ICURC(X_Omega_ccs, I_ccs, J_ccs, r,params_icurc);
 ```
 
 ## Input Description for CCS
@@ -39,14 +39,14 @@ params_icurc.max_ite = 500;
 
 
 ## Output Description for CCS
-1. X_Omega_css : observed data matrix based on CSS sampling model
-2. I_css : row indices of the selected row submatrix
-3. J_css : column indices of the selected column submatrix
+1. X_Omega_ccs : observed data matrix based on CCS sampling model
+2. I_ccs : row indices of the selected row submatrix
+3. J_ccs : column indices of the selected column submatrix
 
 ## Input Description for ICURC
-1. X_Omega_css : observed data matrix based on CSS sampling model
-2. I_css : row indices of the selected row submatrix
-3. J_css : column indices of the selected column submatrix
+1. X_Omega_ccs : observed data matrix based on CCS sampling model
+2. I_ccs : row indices of the selected row submatrix
+3. J_ccs : column indices of the selected column submatrix
 4. r : rank of X.
 5. params_icurc : parameters for the algorithm ICURC
    * .max_iter : Maximum number of iterations. (default 500)

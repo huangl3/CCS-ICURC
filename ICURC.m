@@ -1,11 +1,11 @@
-function [C,U_pinv,R, ICURC_time] = ICURC(X_Omega_UR, I_css, J_css, r, params_ICURC)
+function [C,U_pinv,R, ICURC_time] = ICURC(X_Omega_UR, I_ccs, J_ccs, r, params_ICURC)
 %Return the CUR components of result of solved Matrix Completion problem
 %under Cross-Concentrated Sampling (CCS). 
 %
 %Inputs:
-%   X_Omega_css - observed data matrix based on CSS sampling model
-%   I_css - row indices of the selected row submatrix
-%   J_css - column indices of the selected column submatrix
+%   X_Omega_ccs - observed data matrix based on CCS sampling model
+%   I_ccs - row indices of the selected row submatrix
+%   J_ccs - column indices of the selected column submatrix
 %   r : rank of targt X
 %   params_ICURC - parameter structure containing the following fields:
 %       TOL,max_ite - stopping crICURC_iteria
@@ -36,20 +36,20 @@ function [C,U_pinv,R, ICURC_time] = ICURC(X_Omega_UR, I_css, J_css, r, params_IC
     steps_are1=params_ICURC.steps_are1;
     
     %This step is to extract observed C, U, and R 
-    Obs_U = X_Omega_UR(I_css, J_css);  
-    Obs_C = X_Omega_UR(:, J_css);
-    Obs_R = X_Omega_UR(I_css, :);
+    Obs_U = X_Omega_UR(I_ccs, J_ccs);  
+    Obs_C = X_Omega_UR(:, J_ccs);
+    Obs_R = X_Omega_UR(I_ccs, :);
     C_size = size(Obs_C);
     R_size = size(Obs_R);
 
     all_row_ind = 1:C_size(1); 
     all_col_ind = 1:R_size(2); 
 
-    I_css_comp = setdiff(all_row_ind, I_css); 
-    J_css_comp = setdiff(all_col_ind, J_css); 
+    I_ccs_comp = setdiff(all_row_ind, I_ccs); 
+    J_ccs_comp = setdiff(all_col_ind, J_ccs); 
     
-    C = Obs_C(I_css_comp, :); 
-    R = Obs_R(:, J_css_comp); 
+    C = Obs_C(I_ccs_comp, :); 
+    R = Obs_R(:, J_ccs_comp); 
     %C and R are C_obs\U, R_obs\U.
     Smp_C = C ~= 0;
     Smp_R = R ~= 0; 
@@ -90,7 +90,7 @@ function [C,U_pinv,R, ICURC_time] = ICURC(X_Omega_UR, I_css, J_css, r, params_IC
         fct_time = tic;
         for ICURC_ite = 1:max_ite
             ite_itme = tic;
-            R = u*u'*R;
+            R = u*(u'*R);
             C = C*v*v';        
             Old_error = New_Error;
             
@@ -105,10 +105,10 @@ function [C,U_pinv,R, ICURC_time] = ICURC(X_Omega_UR, I_css, J_css, r, params_IC
 
                 Final_C = zeros(C_size);
                 Final_R = zeros(R_size); 
-                Final_C(I_css_comp, :) = C;
-                Final_R(:, J_css_comp) = R;
-                Final_C(I_css, :) = U_i; 
-                Final_R(:, J_css) = U_i; 
+                Final_C(I_ccs_comp, :) = C;
+                Final_R(:, J_ccs_comp) = R;
+                Final_C(I_ccs, :) = U_i; 
+                Final_R(:, J_ccs) = U_i; 
 
                 C = Final_C;
                 R = Final_R; 
@@ -145,7 +145,7 @@ function [C,U_pinv,R, ICURC_time] = ICURC(X_Omega_UR, I_css, J_css, r, params_IC
         fct_time = tic;
         for ICURC_ite = 1:max_ite
             ite_itme = tic;
-            R = u*u'*R;
+            R = u*(u'*R);
             C = C*v*v';        
             Old_error = New_Error;
             New_Error = (norm(R(Omega_row) - L_obs_row_vec,'fro') + ... 
@@ -161,10 +161,10 @@ function [C,U_pinv,R, ICURC_time] = ICURC(X_Omega_UR, I_css, J_css, r, params_IC
 
                 Final_C = zeros(C_size);
                 Final_R = zeros(R_size); 
-                Final_C(I_css_comp, :) = C;
-                Final_R(:, J_css_comp) = R;
-                Final_C(I_css, :) = U_i; 
-                Final_R(:, J_css) = U_i; 
+                Final_C(I_ccs_comp, :) = C;
+                Final_R(:, J_ccs_comp) = R;
+                Final_C(I_ccs, :) = U_i; 
+                Final_R(:, J_ccs) = U_i; 
 
                 C = Final_C;
                 R = Final_R; 

@@ -73,17 +73,17 @@ function [C,U_pinv,R, ICURC_time] = ICURC(X_Omega_UR, I_ccs, J_ccs, r, params_IC
     col_row_norm_sum = normC_obs + normU_obs + normR_obs;    
     
     %Initializing U
-    U_i = Obs_U;
-    [u,s,v] = svd(U_i);  
+    U = Obs_U;
+    [u,s,v] = svd(U);  
     u = u(:, 1:r);
     v = v(:, 1:r);
     s = s(1:r, 1:r);  
-    U_i = u*s*v'; 
+    U = u*s*v'; 
     
     %Calculating error
    % New_Error = (norm(R(Omega_row) - L_obs_row_vec,'fro') + ... 
     %                        norm(C(Omega_col)- L_obs_col_vec, 'fro') + ... 
-     %                       norm(U_i(Omega_U)- L_obs_U_vec))/col_row_norm_sum;
+     %                       norm(U(Omega_U)- L_obs_U_vec))/col_row_norm_sum;
     %If all step sizes are 1
     if steps_are1 
         fprintf('running ICURC with stepsize all equal to 1\n');
@@ -100,19 +100,19 @@ function [C,U_pinv,R, ICURC_time] = ICURC(X_Omega_UR, I_ccs, J_ccs, r, params_IC
                 ICURC_time = toc(fct_time); 
                 R(Omega_row) = L_obs_row_vec;
                 C(Omega_col) = L_obs_col_vec;
-                U_i(Omega_U) = L_obs_U_vec; 
+                U(Omega_U) = L_obs_U_vec; 
 
                 Final_C = zeros(C_size);
                 Final_R = zeros(R_size); 
                 Final_C(I_ccs_comp, :) = C;
                 Final_R(:, J_ccs_comp) = R;
-                Final_C(I_ccs, :) = U_i; 
-                Final_R(:, J_ccs) = U_i; 
+                Final_C(I_ccs, :) = U; 
+                Final_R(:, J_ccs) = U; 
 
                 C = Final_C;
                 R = Final_R; 
                 
-                [u,s,v] = svd(U_i);  
+                [u,s,v] = svd(U);  
                 u = u(:, 1:r);
                 v = v(:, 1:r);
                 s = s(1:r, 1:r);  
@@ -123,13 +123,13 @@ function [C,U_pinv,R, ICURC_time] = ICURC(X_Omega_UR, I_ccs, J_ccs, r, params_IC
             %Updating R, C, and U
             R(Omega_row) = L_obs_row_vec;
             C(Omega_col) = L_obs_col_vec;
-            U_i(Omega_U) =  L_obs_U_vec; 
+            U(Omega_U) =  L_obs_U_vec; 
 
-            [u,s,v] = svd(U_i);  
+            [u,s,v] = svd(U);  
             u = u(:, 1:r);
             v = v(:, 1:r);
             s = s(1:r, 1:r);  
-            U_i = u*s*v';
+            U = u*s*v';
             
             fprintf('Iteration %d: error: %e, timer: %f \n', ICURC_ite, New_Error, toc(ite_itme));
         end
@@ -149,26 +149,26 @@ function [C,U_pinv,R, ICURC_time] = ICURC(X_Omega_UR, I_ccs, J_ccs, r, params_IC
             Old_error = New_Error;
             New_Error = (norm(R(Omega_row) - L_obs_row_vec,'fro') + ... 
                             norm(C(Omega_col)- L_obs_col_vec, 'fro') + ... 
-                            norm(U_i(Omega_U)- L_obs_U_vec))/col_row_norm_sum;   
+                            norm(U(Omega_U)- L_obs_U_vec))/col_row_norm_sum;   
                         
             if New_Error < TOL || ICURC_ite == max_ite
                 ICURC_time = toc(fct_time); 
 
                 R(Omega_row) = L_obs_row_vec;
                 C(Omega_col) = L_obs_col_vec;
-                U_i(Omega_U) = L_obs_U_vec; 
+                U(Omega_U) = L_obs_U_vec; 
 
                 Final_C = zeros(C_size);
                 Final_R = zeros(R_size); 
                 Final_C(I_ccs_comp, :) = C;
                 Final_R(:, J_ccs_comp) = R;
-                Final_C(I_ccs, :) = U_i; 
-                Final_R(:, J_ccs) = U_i; 
+                Final_C(I_ccs, :) = U; 
+                Final_R(:, J_ccs) = U; 
 
                 C = Final_C;
                 R = Final_R; 
 
-                [u,s,v] = svd(U_i);  
+                [u,s,v] = svd(U);  
                 u = u(:, 1:r);
                 v = v(:, 1:r);
                 s = s(1:r, 1:r);  
@@ -179,13 +179,13 @@ function [C,U_pinv,R, ICURC_time] = ICURC(X_Omega_UR, I_ccs, J_ccs, r, params_IC
             %Updating R, C, and U
             R(Omega_row) = (1 - step_r)*R(Omega_row) + step_r*(L_obs_row_vec);     
             C(Omega_col) = (1 - step_c)*C(Omega_col) + step_c*(L_obs_col_vec);
-            U_i(Omega_U) =  (1 - step_u)*U_i(Omega_U) + step_u*(L_obs_U_vec); 
+            U(Omega_U) =  (1 - step_u)*U(Omega_U) + step_u*(L_obs_U_vec); 
 
-            [u,s,v] = svd(U_i);  
+            [u,s,v] = svd(U);  
             u = u(:, 1:r);
             v = v(:, 1:r);
             s = s(1:r, 1:r);  
-            U_i = u*s*v';
+            U = u*s*v';
             fprintf('Iteration %d: error: %e, timer: %f \n', ICURC_ite, New_Error, toc(ite_itme));
 
          end

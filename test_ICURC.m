@@ -20,12 +20,12 @@ B_generater = randn(r,n);
 X = A_generater * B_generater;
 
 % Generate observed data under CCS with give p and delta
-[X_Omega_css, I_css, J_css] = CCS(X, params_CCS); 
+[X_Omega_ccs, I_ccs, J_ccs] = CCS(X, params_CCS); 
 
 fprintf('Running ICURC with m=%d, n=%d, r=%d \n',m,n,r);
 
 %% Run ICURC 
-[C, U_pinv, R, ICURC_time] = ICURC(X_Omega_css, I_css, J_css, r, params_ICURC);
+[C, U_pinv, R, ICURC_time] = ICURC(X_Omega_ccs, I_ccs, J_ccs, r, params_ICURC);
 Mout_CURf = C* U_pinv *R; 
 Error = norm(Mout_CURf - X,'fro') / norm(X,'fro');
 

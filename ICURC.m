@@ -95,7 +95,7 @@ function [C,U_pinv,R, ICURC_time] = ICURC(X_Omega_UR, I_ccs, J_ccs, r, params_IC
             
             New_Error = (norm(R(Omega_row) - L_obs_row_vec,'fro') + ... 
                             norm(C(Omega_col)- L_obs_col_vec, 'fro') + ... 
-                            norm(U_i(Omega_U)- L_obs_U_vec))/col_row_norm_sum;  
+                            norm(U(Omega_U)- L_obs_U_vec))/col_row_norm_sum;  
             if New_Error < TOL || ICURC_ite == max_ite 
                 ICURC_time = toc(fct_time); 
                 R(Omega_row) = L_obs_row_vec;

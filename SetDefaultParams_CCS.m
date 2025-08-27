@@ -10,6 +10,5 @@ end
 if (isfield(s, 'delta') == 0),
     s.delta = 0.2;
 end
-
 end
 
